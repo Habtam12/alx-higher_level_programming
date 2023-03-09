@@ -1,72 +1,49 @@
 #include "lists.h"
-#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 /**
- * insert_node - Inserts a number into a sorted singly linked list
- * @head: Pointer the list
- * @number: Number insert
- * Return: the head of new list
+ * insert_node - function that inserts a number to a singly linked list.
+ * @head: pointer to pointer to head of the list.
+ * @number: value of the node to insert.
+ *
+ * Return: the address of the new node, or NULL if it failed.
  */
+
 listint_t *insert_node(listint_t **head, int number)
 {
-	listint_t *insert;
-	listint_t *node;
-
-	insert = *head;
-
-	node = malloc(sizeof(listint_t));
-	if (!node)
+	listint_t *new_node, *traverse;
+	unsigned int idx = 0, i = 0;
+	/* if there is no list return null */
+	if (head == NULL)
 		return (NULL);
-
-	node->n = number;
-	node->next = NULL;
-
-	if (*head == NULL)
+	/* create the new node */
+	new_node = malloc(sizeof(listint_t));
+	if (new_node == NULL)
+		return (NULL);
+	/* access the n field of the new_node and initialize it as n */
+	new_node->n = number;
+	/* check if idx = 0 */
+	if (idx == 0)
 	{
-		*head = node;
-		return (node);
+		/* access the next field of new_node and assign it as first node */
+		new_node->next = *head;
+		*head = new_node;
+		return (new_node);
+	}
+	/* make traverse be the value at head */
+	traverse = *head;
+	while (i != idx - 1 && traverse != NULL)
+	{
+		traverse = traverse->next;
+		i++;
 	}
 
-	if (insert->next == NULL)
+	if (i == idx - 1 && traverse != NULL)
 	{
-		if (insert->n < number)
-		{
-			insert->next = node;
-			return (node);
-		}
-		else
-		{
-			node->next = insert;
-			*head = node;
-			return (node);
-		}
+		new_node->next = traverse->next;
+		traverse->next = new_node;
+		return (new_node);
 	}
-
-	while (insert)
-	{
-		if (insert->next)
-		{
-			if (insert->n > number)
-			{
-				node->next = insert;
-				*head = node;
-				break;
-			}
-		    else if (insert->next->n > number)
-			{
-				node->next = insert->next;
-				insert->next = node;
-				break;
-		    }
-			else
-				insert = insert->next;
-		}
-		else
-		{
-			node->next = NULL;
-			insert->next = node;
-			break;
-		}
-	}
-	return (node);
+	return (NULL);
 }
