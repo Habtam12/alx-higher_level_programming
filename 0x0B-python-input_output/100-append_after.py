@@ -1,25 +1,21 @@
 #!/usr/bin/python3
-"""0x0B. Python - Input/Output, task 15. Search and update"""
+"""write_file module.
+
+Contains a function that inserts a line of text to a file.
+"""
 
 
 def append_after(filename="", search_string="", new_string=""):
-    """Inserts a line of text to a file, after each line containing a specific
-    string.
-
-    Args:
-        filename (str): file to search
-        search_string (str): search term
-        new_string (str): line to insert into file after line containing match
-
     """
-    with open(filename, 'r+', encoding='utf-8') as curr_file:
-        lines = curr_file.readlines()
-        curr_file.seek(0)
-        for i, line in enumerate(lines):
-            #            print("read:   {}".format(line), end='')
+    Inserts a line of text to a file, after
+    each line containing a specific string.
+    """
+    out = ""
+    with open(filename, 'r') as f:
+        for line in f:
+            out += line
             if search_string in line:
-                lines[i] = line + new_string
-                #                print("modded: {}".format(line), end='')
-#        for line in lines:
-#            print(line, end="")
-        curr_file.writelines(lines)
+                out += new_string
+
+    with open(filename, 'w') as f:
+        f.write(out)
